@@ -19,6 +19,7 @@ let compGuess = letters[indexNum];
 function initDisplay () {
     
     guessesLeft.textContent = "Remaining Guesses: " + remainingGuesses;
+    numberOfLosses.textContent = "Losses: " + losses;
     numberOfWins.textContent = "Number of Wins:" + wins;             
 }
 
@@ -26,6 +27,7 @@ function winStartOver (){
     wins++;
     numberOfWins.textContent = "Number of Wins: " + wins;
     usedLetters.textContent = "";  
+    remainingGuesses = 10;  
     guessesLeft.textContent = "Remaining Guesses: " + remainingGuesses;
     indexNum = Math.floor(Math.random() * 25);
     compGuess = letters[indexNum];
@@ -50,23 +52,25 @@ initDisplay();
 
 document.onkeyup = function (event) {
     
-    let userGuess = event.key.toUpperCase();           
+    let userGuess = event.key.toUpperCase();    
+    
+    if (letters.indexOf(userGuess) != -1) {
 
-if (compGuess != userGuess) {
-    remainingGuesses--;
-    guessesLeft.textContent = "Remaining Guesses: " + remainingGuesses;
-    usedLetters.textContent += userGuess + ", ";
-    console.log(compGuess);
-}else {
-    confirm("Great job. I was thinking " + userGuess + ". Play another round?");
-    winStartOver();
-}
+        if (compGuess != userGuess) {
+            remainingGuesses--;
+            guessesLeft.textContent = "Remaining Guesses: " + remainingGuesses;
+            usedLetters.textContent += userGuess + ", ";
+            console.log(compGuess);
+        }else {
+            confirm("Wow! You're right. " + userGuess + " is correct. Play another round?");
+            winStartOver();
+        }
 
-if ((userGuess != compGuess) && (remainingGuesses == 0)) {
-        confirm("Nope! Try Again?");
-        lossStartOver();
-}
-
+        if ((userGuess != compGuess) && (remainingGuesses == 0)) {
+                confirm("Told you so! Try Again?");
+                lossStartOver();
+        }
+    }   
 }
 
 
